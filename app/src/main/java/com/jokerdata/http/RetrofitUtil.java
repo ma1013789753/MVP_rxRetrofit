@@ -7,7 +7,7 @@ import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -22,7 +22,7 @@ public class RetrofitUtil {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BaseHttp.URL)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//支持RxJava
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//支持RxJava
                 .client(getOkHttpClient())//使用本地OkHttp
                 .build();
     }

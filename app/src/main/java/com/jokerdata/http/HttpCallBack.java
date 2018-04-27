@@ -7,5 +7,5 @@ package com.jokerdata.http;
 public interface HttpCallBack<T> {
 
     void onSuccess(T t);
-    void onError();
+    void onError(Throwable e);
 }

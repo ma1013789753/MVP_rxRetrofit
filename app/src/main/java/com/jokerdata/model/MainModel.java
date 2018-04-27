@@ -1,14 +1,18 @@
 package com.jokerdata.model;
 
+import android.util.Log;
+
+import com.jokerdata.base.MyApplication;
 import com.jokerdata.bean.Book;
 import com.jokerdata.http.HttpCallBack;
-import com.jokerdata.http.RetrofitService;
 import com.jokerdata.http.RetrofitUtil;
+import com.jokerdata.util.NetworkUtils;
 
-import rx.Observable;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by oldma on 2018/2/23.
@@ -21,27 +25,36 @@ public class MainModel {
      *
      */
     public void sendData(String str, final HttpCallBack callBack){
+        RetrofitUtil.getInstance()
+                .getBook1(str,null,0,1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Book>() {
 
-        RetrofitService service = RetrofitUtil.getInstance();
-        Observable<Book> observable = service.getBook1(str,null,0,1);
-//        Observable<Book> observable = service.getBook2(map);
-        observable.subscribeOn(Schedulers.io())//请求数据的事件发生在io线程
-                     .observeOn(AndroidSchedulers.mainThread())//请求完成后在主线程更显UI
-                     .subscribe(new Observer<Book>() {
-                         @Override
-                         public void onCompleted() {
 
-                         }
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.w("xxx","onSubscribe");
 
-                         @Override
-                         public void onError(Throwable e) {
-                            callBack.onError();
-                         }
-                         @Override
-                         public void onNext(Book t) {
-                             callBack.onSuccess(t);
-                         }
-                     });
+                    }
+
+                    @Override
+                    public void onNext(Book book) {
+                        Log.w("xxx","onNext");
+                        callBack.onSuccess(book);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.w("xxx",e.toString());
+                        callBack.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.w("xxx","onComplete");
+                    }
+                });
 
 
     }

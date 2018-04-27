@@ -4,10 +4,10 @@ import com.jokerdata.bean.Book;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
-import rx.Observable;
 
 /**
  * Created by oldma on 2018/2/23.

@@ -1,12 +1,13 @@
 package com.jokerdata.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by oldma on 2018/2/23.
  */
 
-public class Book  {
+public class Book  implements Serializable{
 
 
     /**

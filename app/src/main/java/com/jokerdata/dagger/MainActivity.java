@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.jokerdata.dagger.R.id.get;
+import static com.jokerdata.dagger.R.id.send;
 
 public class MainActivity extends Activity  {
 
@@ -35,6 +36,9 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         presenter = new MainPresenter();
+        new Thread(() -> {
+
+        }).start();
     }
 
 
@@ -50,18 +54,24 @@ public class MainActivity extends Activity  {
                 break;
             case R.id.send:
                 //("q") String name, @Query("tag") String tag, @Query("start") int start, @Query("count") int count);
-                presenter.sendData(getData(), new HttpCallBack<Book>() {
+                presenter.sendData(getData(), new HttpCallBack() {
                     @Override
-                    public void onSuccess(Book book) {
-                        Toast.makeText(MainActivity.this, book.toString(), Toast.LENGTH_SHORT).show();
+                    public void onSuccess(Object o) {
+
                     }
 
                     @Override
-                    public void onError() {
-                        Toast.makeText(MainActivity.this,"错误", Toast.LENGTH_SHORT).show();
+                    public void onError(Throwable e) {
+
                     }
                 });
+
                 break;
         }
     }
+
+public interface fhsdf{
+    void haha();
+}
+
 }
