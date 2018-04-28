@@ -2,23 +2,41 @@ package com.jokerdata.dagger;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.jokerdata.base.BaseActivity;
 import com.jokerdata.bean.Book;
 import com.jokerdata.http.HttpCallBack;
 import com.jokerdata.presenter.MainPresenter;
+import com.jokerdata.rxbus.RxBus;
+import com.jokerdata.view.MainViewInterface;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+
+import org.reactivestreams.Subscription;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.FlowableSubscriber;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.jokerdata.dagger.R.id.get;
 import static com.jokerdata.dagger.R.id.send;
 
-public class MainActivity extends Activity  {
+public class MainActivity extends BaseActivity implements MainViewInterface {
 
 
     @BindView(R.id.text)
@@ -35,13 +53,30 @@ public class MainActivity extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        presenter = new MainPresenter();
-        new Thread(() -> {
-
-        }).start();
+        presenter = new MainPresenter(this);
+        initRegist();
     }
 
+    private void initRegist() {
 
+        mDisposable = RxBus.getDefault()
+                .toObservable(136,String.class)
+                .compose(this.bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s->{
+
+                });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public String getData() {
         return mText.getText().toString();
     }
@@ -50,11 +85,10 @@ public class MainActivity extends Activity  {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case get:
-                Toast.makeText(this, getData(), Toast.LENGTH_SHORT).show();
+                SecondActivity.startAct(this);
                 break;
             case R.id.send:
-                //("q") String name, @Query("tag") String tag, @Query("start") int start, @Query("count") int count);
-                presenter.sendData(getData(), new HttpCallBack() {
+                presenter.sendData(new HttpCallBack() {
                     @Override
                     public void onSuccess(Object o) {
 

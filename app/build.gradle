@@ -36,7 +36,15 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
 //    //RxAndroid
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-
+    //rxBind
+    compile 'com.jakewharton.rxbinding:rxbinding:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-design:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:1.0.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-leanback-v17:1.0.0'
+    //rxjava 生命周期监听
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
     //网络请求
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     //实体类转换器
