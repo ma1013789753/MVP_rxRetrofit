@@ -55,9 +55,9 @@ public class SecondActivity extends BaseActivity {
                 });
         //每隔1s执行一次事件
         Observable.interval(1, TimeUnit.SECONDS)
-                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

@@ -61,9 +61,9 @@ public class MainActivity extends BaseActivity implements MainViewInterface {
 
         mDisposable = RxBus.getDefault()
                 .toObservable(136,String.class)
-                .compose(this.bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(s->{
 
                 });
